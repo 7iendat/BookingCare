@@ -12,7 +12,7 @@ import * as actions from "../../store/actions";
 import "./Login.scss";
 // import { FormattedMessage } from "react-intl";
 
-// import adminService from "../services/adminService";
+// import userService from "../services/userService";
 
 class Login extends Component {
   constructor(props) {
@@ -20,6 +20,7 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
+      errorMessage: "",
     };
     // this.btnLogin = React.createRef();
   }
@@ -43,10 +44,29 @@ class Login extends Component {
   };
 
   handleLogin = async () => {
+    this.setState({
+      errorMessage: "",
+    });
     try {
-      await handleLoginApi(this.state.username, this.state.password);
+      let data = await handleLoginApi(this.state.username, this.state.password);
+      if (data && data.errCode !== 0) {
+        this.setState({
+          errorMessage: data.message,
+        });
+      }
+
+      if (data && data.errCode === 0) {
+        this.props.userLoginSuccess(data.user);
+        console.log("success", data.user);
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.data) {
+          this.setState({
+            errorMessage: error.response.data.message,
+          });
+        }
+      }
     }
   };
   // redirectToSystemPage = () => {
@@ -58,24 +78,24 @@ class Login extends Component {
   // processLogin = () => {
   //     const { username, password } = this.state;
 
-  //     const { adminLoginSuccess, adminLoginFail } = this.props;
+  //     const { userLoginSuccess, userLoginFail } = this.props;
   //     let loginBody = {
-  //         username: 'admin',
+  //         username: 'user',
   //         password: '123456'
   //     }
   //     //sucess
-  //     let adminInfo = {
+  //     let userInfo = {
   //         "tlid": "0",
-  //         "tlfullname": "Administrator",
+  //         "tlfullname": "useristrator",
   //         "custype": "A",
   //         "accessToken": "eyJhbGciOiJIU"
   //     }
 
-  //     adminLoginSuccess(adminInfo);
+  //     userLoginSuccess(userInfo);
   //     this.refresh();
   //     this.redirectToSystemPage();
   //     try {
-  //         adminService.login(loginBody)
+  //         userService.login(loginBody)
   //     } catch (e) {
   //         console.log('error login : ', e)
   //     }
@@ -133,6 +153,9 @@ class Login extends Component {
                 onChange={(e) => this.onPasswordChange(e)}
               />
             </div>
+            <div className="col-12" style={{ color: "red" }}>
+              <p> {this.state.errorMessage}</p>
+            </div>
 
             <div className="col-12">
               <button className="btn-login" onClick={() => this.handleLogin()}>
@@ -166,9 +189,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigate: (path) => dispatch(push(path)),
-    adminLoginSuccess: (adminInfo) =>
-      dispatch(actions.adminLoginSuccess(adminInfo)),
-    adminLoginFail: () => dispatch(actions.adminLoginFail()),
+    userLoginSuccess: (userInfo) =>
+      dispatch(actions.userLoginSuccess(userInfo)),
+    userLoginFail: () => dispatch(actions.userLoginFail()),
   };
 };
 
