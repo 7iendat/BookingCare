@@ -15,7 +15,54 @@ import {
   Form,
 } from "reactstrap";
 class ModalUser extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      firstname: "",
+      lastname: "",
+      address: "",
+      phone: "",
+    };
+  }
+
+  validInput = () => {
+    let arrTag = [
+      "email",
+      "password",
+      "firstname",
+      "lastname",
+      "address",
+      "phone",
+    ];
+    let isValid = true;
+
+    for (let i = 0; i < arrTag.length; i++) {
+      if (this.state[arrTag[i]] === "") {
+        isValid = false;
+        alert("Missing parameter", arrTag[i]);
+        break;
+      }
+    }
+    return isValid;
+  };
+
+  createNewUser = () => {
+    let checkValid = this.validInput();
+    if (checkValid) {
+      this.props.createNewUser(this.state);
+    }
+  };
+
+  handleChangeInput = (event, id) => {
+    let copyState = { ...this.state };
+
+    copyState[id] = event.target.value;
+    this.setState({
+      ...copyState,
+    });
+  };
 
   componentDidMount() {}
 
@@ -45,6 +92,8 @@ class ModalUser extends Component {
                     className="email"
                     placeholder="Enter a email"
                     type="email"
+                    onChange={(event) => this.handleChangeInput(event, "email")}
+                    value={this.state.email}
                   />
                 </FormGroup>
               </Col>
@@ -56,6 +105,10 @@ class ModalUser extends Component {
                     className="password"
                     placeholder="Enter a password "
                     type="password"
+                    onChange={(event) =>
+                      this.handleChangeInput(event, "password")
+                    }
+                    value={this.state.password}
                   />
                 </FormGroup>
               </Col>
@@ -68,6 +121,10 @@ class ModalUser extends Component {
                     id="firstName"
                     className="firstName"
                     placeholder="Enter firstName"
+                    onChange={(event) =>
+                      this.handleChangeInput(event, "firstname")
+                    }
+                    value={this.state.firstname}
                   />
                 </FormGroup>
               </Col>
@@ -78,6 +135,10 @@ class ModalUser extends Component {
                     id="lastName"
                     className="lastName"
                     placeholder="Enter LastName "
+                    onChange={(event) =>
+                      this.handleChangeInput(event, "lastname")
+                    }
+                    value={this.state.lastname}
                   />
                 </FormGroup>
               </Col>
@@ -91,6 +152,10 @@ class ModalUser extends Component {
                     id="address"
                     className="address"
                     placeholder="Enter address"
+                    onChange={(event) =>
+                      this.handleChangeInput(event, "address")
+                    }
+                    value={this.state.address}
                   />
                 </FormGroup>
               </Col>
@@ -101,6 +166,8 @@ class ModalUser extends Component {
                     id="numPhone"
                     className="numberPhone"
                     placeholder="0708340225"
+                    onChange={(event) => this.handleChangeInput(event, "phone")}
+                    value={this.state.phone}
                   />
                 </FormGroup>
               </Col>
@@ -110,7 +177,7 @@ class ModalUser extends Component {
         <ModalFooter>
           <Button
             color="primary"
-            onClick={() => this.toggle()}
+            onClick={() => this.createNewUser()}
             style={{ height: 40, width: 60 }}
           >
             Create
