@@ -14,11 +14,13 @@ import {
   Row,
   Form,
 } from "reactstrap";
-import { emitter } from "../../utils/emitter";
-class ModalUser extends Component {
+import _ from "lodash";
+
+class ModalEditUser extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: "",
       email: "",
       password: "",
       firstName: "",
@@ -26,24 +28,7 @@ class ModalUser extends Component {
       address: "",
       phoneNumber: "",
     };
-
-    this.listenToEmitter();
   }
-
-  listenToEmitter = () => {
-    emitter.on("EVENT_CLEAR_MODAL_DATA", () => {
-      // reset
-
-      this.setState({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: "",
-        address: "",
-        phoneNumber: "",
-      });
-    }); // listen event
-  };
 
   validInput = () => {
     let arrTag = [
@@ -66,13 +51,6 @@ class ModalUser extends Component {
     return isValid;
   };
 
-  createNewUser = () => {
-    let checkValid = this.validInput();
-    if (checkValid) {
-      this.props.createNewUser(this.state);
-    }
-  };
-
   handleChangeInput = (event, id) => {
     let copyState = { ...this.state };
 
@@ -82,10 +60,27 @@ class ModalUser extends Component {
     });
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    let currUser = this.props.currUser;
+
+    if (currUser && !_.isEmpty(currUser)) {
+      this.setState({
+        id: currUser.id,
+        email: currUser.email,
+        firstName: currUser.firstName,
+        lastName: currUser.lastName,
+        address: currUser.address,
+        phoneNumber: currUser.phoneNumber,
+      });
+    }
+  }
 
   toggle = () => {
     this.props.toggle();
+  };
+
+  editUser = (data) => {
+    this.props.editUser(data);
   };
 
   render() {
@@ -127,6 +122,7 @@ class ModalUser extends Component {
                       this.handleChangeInput(event, "password")
                     }
                     value={this.state.password}
+                    disabled
                   />
                 </FormGroup>
               </Col>
@@ -197,10 +193,10 @@ class ModalUser extends Component {
         <ModalFooter>
           <Button
             color="primary"
-            onClick={() => this.createNewUser()}
+            onClick={() => this.editUser(this.state)}
             style={{ height: 40, width: 60 }}
           >
-            Create
+            Edit
           </Button>{" "}
           <Button
             color="secondary"
@@ -223,4 +219,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEditUser);

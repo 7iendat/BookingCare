@@ -2,8 +2,16 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./UserManage.scss";
-import { createNewUser, getAllUsers } from "../../services/userService";
+import {
+  createNewUser,
+  deleteUser,
+  editUser,
+  getAllUsers,
+} from "../../services/userService";
 import ModalUser from "./ModalUser";
+import ModalEditUser from "./ModalEditUser";
+
+import { emitter } from "../../utils/emitter";
 
 class UserManage extends Component {
   constructor(pros) {
@@ -11,6 +19,8 @@ class UserManage extends Component {
     this.state = {
       arrUsers: [],
       isOpenModal: false,
+      isOpenModalEdit: false,
+      currentUser: {},
     };
   }
 
@@ -18,14 +28,15 @@ class UserManage extends Component {
     try {
       let result = await createNewUser(data);
 
-      if (result && result !== 0) {
-        alert(result.message);
-      } else {
-        alert(result.message);
+      if (result && result.errorCode === 0) {
         await this.getAllUsers();
+        alert(result.message);
         this.setState({
           isOpenModal: false,
         });
+        emitter.emit("EVENT_CLEAR_MODAL_DATA"); // fire event
+      } else {
+        alert(result.message);
       }
     } catch (error) {
       console.log(error);
@@ -57,15 +68,71 @@ class UserManage extends Component {
       isOpenModal: !this.state.isOpenModal,
     });
   };
+  toggleUserModalEdit = () => {
+    this.setState({
+      isOpenModalEdit: !this.state.isOpenModalEdit,
+    });
+  };
+
+  handleDeleteUser = async (id) => {
+    let result = await deleteUser(id);
+
+    if (result && result.errCode === 0) {
+      alert(result.message);
+      await this.getAllUsers();
+    } else {
+      alert(result.message);
+    }
+  };
+
+  handleEditUser = async (user) => {
+    console.log("user eidt: ", user);
+
+    try {
+      let result = await editUser(user);
+      if (result && result.errCode === 0) {
+        alert(result.message);
+        this.setState({
+          isOpenModalEdit: false,
+        });
+
+        await getAllUsers();
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  handleOpenModalUser = (user) => {
+    this.setState({
+      isOpenModalEdit: true,
+      currentUser: user,
+    });
+  };
+
   render() {
     let arrUsers = this.state.arrUsers;
+
     return (
       <div className="users-container">
-        <ModalUser
-          isOpen={this.state.isOpenModal}
-          toggle={this.toggleUserModal}
-          createNewUser={this.handleCreateNewUser}
-        />
+        {this.state.isOpenModal && (
+          <ModalUser
+            isOpen={this.state.isOpenModal}
+            toggle={this.toggleUserModal}
+            createNewUser={this.handleCreateNewUser}
+          />
+        )}
+
+        {this.state.isOpenModalEdit && (
+          <ModalEditUser
+            isOpen={this.state.isOpenModalEdit}
+            toggle={this.toggleUserModalEdit}
+            currUser={this.state.currentUser}
+            editUser={this.handleEditUser}
+          />
+        )}
         <div className="title text-center">MANAGE USERS</div>
 
         <div className="mx-3">
@@ -99,10 +166,16 @@ class UserManage extends Component {
                     <td>{item.phoneNumber}</td>
                     <td>{item.roleId}</td>
                     <td>
-                      <button className="btn-edit">
+                      <button
+                        className="btn-edit"
+                        onClick={() => this.handleOpenModalUser(item)}
+                      >
                         <i className="fas fa-pencil-alt"></i>
                       </button>
-                      <button className="btn-delete">
+                      <button
+                        className="btn-delete"
+                        onClick={() => this.handleDeleteUser(item.id)}
+                      >
                         <i class="fas fa-trash-alt"></i>
                       </button>
                     </td>
