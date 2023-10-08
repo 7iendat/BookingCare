@@ -1,4 +1,24 @@
 {
+    "headerhome":{
+        "specialty":"Specialty",
+        "search-doctor-by-specialty":"Find doctor by specialty",
+        "medical-facility":"Medical facility",
+        "select-hospital-clinic":"Choose hospital clinic",
+        "doctor":"Doctor",
+        "select-doctor":"Choose a good doctor",
+        "examination-package":"Examination package",
+        "general-health-examination":"General physical examination ",
+        "support":"Support",
+        "medical-foundation":"MEDICAL FOUNDATION",
+        "holistic-health-care":"HOLISTIC HEALTH CARE",
+        "specialty-examination":"Specialty Examination",
+        "telemedicine":"Telemedicine",
+        "general-examination":"General Examination",
+        "medical-tests":"Medical Tests",
+        "health-tests":"Health Tests",
+        "medical-close-home":"Medical Close To Home"
+
+    },
     "common": {
         "add": "Add",
         "edit": "Edit",
