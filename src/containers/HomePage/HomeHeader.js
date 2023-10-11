@@ -2,15 +2,22 @@ import React, { Component, Fragment } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import "./HomeHeader.scss";
+import { LANGUAGE } from "../../utils/constant";
+import { handleChangeLanguage } from "../../store/actions";
 
 class HomeHeader extends Component {
+  changeLanguage = (language) => {
+    this.props.changeLanguageApp(language);
+  };
+
   render() {
+    let language = this.props.language;
     return (
       <Fragment>
         <div className="home-header-container">
           <div className="home-header-content">
             <div className="left-header">
-              <i class="fas fa-bars"></i>
+              <i className="fas fa-bars"></i>
               <div className="logo-header"></div>
             </div>
             <div className="center-header">
@@ -59,14 +66,35 @@ class HomeHeader extends Component {
             </div>
             <div className="right-header">
               <div className="support">
-                <i class="fas fa-question-circle"></i>
+                <i className="fas fa-question-circle"></i>
                 <b>
                   <FormattedMessage id="headerhome.support" />
                 </b>
               </div>
               <div className="translate">
-                <div className="vietnamese">Vietnamese</div> |
-                <div className="english">English</div>
+                <div
+                  className={
+                    language === LANGUAGE.VI
+                      ? "vietnamese active"
+                      : "vietnamese"
+                  }
+                  onClick={() => {
+                    this.changeLanguage(LANGUAGE.VI);
+                  }}
+                >
+                  Vietnamese
+                </div>{" "}
+                |
+                <div
+                  className={
+                    language === LANGUAGE.EN ? "english active" : "english"
+                  }
+                  onClick={() => {
+                    this.changeLanguage(LANGUAGE.EN);
+                  }}
+                >
+                  English
+                </div>
               </div>
             </div>
           </div>
@@ -81,7 +109,7 @@ class HomeHeader extends Component {
               <FormattedMessage id="headerhome.holistic-health-care" />
             </div>
             <div className="search">
-              <i class="fas fa-search"></i>
+              <i className="fas fa-search"></i>
               <input type="text" placeholder="Tìm bác sĩ" />
             </div>
           </div>
@@ -89,7 +117,7 @@ class HomeHeader extends Component {
             <div className="options">
               <div className="option">
                 <div className="icon-option">
-                  <i class="far fa-hospital"></i>
+                  <i className="far fa-hospital"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.specialty-examination" />
@@ -97,7 +125,7 @@ class HomeHeader extends Component {
               </div>
               <div className="option">
                 <div className="icon-option">
-                  <i class="fas fa-mobile-alt"></i>
+                  <i className="fas fa-mobile-alt"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.telemedicine" />
@@ -105,7 +133,7 @@ class HomeHeader extends Component {
               </div>{" "}
               <div className="option">
                 <div className="icon-option">
-                  <i class="fas fa-money-check"></i>
+                  <i className="fas fa-money-check"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.general-examination" />
@@ -113,7 +141,7 @@ class HomeHeader extends Component {
               </div>{" "}
               <div className="option">
                 <div className="icon-option">
-                  <i class="fas fa-vial"></i>
+                  <i className="fas fa-vial"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.medical-tests" />
@@ -121,7 +149,7 @@ class HomeHeader extends Component {
               </div>{" "}
               <div className="option">
                 <div className="icon-option">
-                  <i class="fas fa-tasks"></i>
+                  <i className="fas fa-tasks"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.health-tests" />
@@ -129,7 +157,7 @@ class HomeHeader extends Component {
               </div>{" "}
               <div className="option">
                 <div className="icon-option">
-                  <i class="fas fa-home"></i>
+                  <i className="fas fa-home"></i>
                 </div>
                 <div className="text-option">
                   <FormattedMessage id="headerhome.medical-close-home" />
@@ -151,7 +179,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    changeLanguageApp: (lang) => dispatch(handleChangeLanguage(lang)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);

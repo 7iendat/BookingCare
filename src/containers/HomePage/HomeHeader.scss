@@ -66,15 +66,19 @@
                 cursor: pointer;
                 .vietnamese{
                     padding-right: 6px;
+                    opacity: 0.4;
                    &.active{
+                    opacity: 1;
                     color: rgb(254, 85, 19);
                    }
 
                 }
 
                 .english{
+                    opacity: 0.4;
                     padding-left: 6px;
                     &.active{
+                        opacity: 1;
                         color: #649dfc;
                     }
                 }
