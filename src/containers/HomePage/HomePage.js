@@ -11,6 +11,7 @@ import OutStandingDoctor from "./Sections/OutStandingDoctor";
 import HandBook from "./Sections/HandBook";
 import About from "./Sections/About";
 import HomeFooter from "./HomeFooter";
+import Media from "./Sections/Media";
 
 class HomePage extends Component {
   render() {
@@ -28,6 +29,7 @@ class HomePage extends Component {
         <MedicalFacility setting={settings} />
         <OutStandingDoctor setting={settings} />
         <HandBook setting={settings} />
+        <Media />
         <About />
         <HomeFooter />
       </div>

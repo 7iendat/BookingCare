@@ -216,6 +216,44 @@
     }
 }
 
+.media-section{
+    width: 100%;
+    height: 500px;
+    padding: 30px 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   .video-section{
+    width: 50%;
+    height: 100%;
+    margin-right: 20px;
+    h1{
+        margin-bottom: 20px;
+    }
+   }
+   .media-chanel{
+        width: 40%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        a{
+            margin-right: 20px;
+            .chanel{
+                width: 110px;
+                height: 37px;
+                background: url(https://bookingcare.vn/assets/truyenthong/vtv1.png);
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-repeat: no-repeat;
+                background-size: cover;
+               
+            }
+        }
+        
+   }
+}
+
 .home-footer{
     height: 80px;
     width: 100%;
