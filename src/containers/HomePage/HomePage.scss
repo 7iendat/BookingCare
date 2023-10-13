@@ -55,6 +55,7 @@
   
     }
 
+
     .section-body{
         .img-customize {
            
@@ -158,6 +159,97 @@
     }
 }
 
+.about-section{
+    height: 300px;
+    width: 100%;
+    padding: 10px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f5f5f5;
 
+    .information{
+        height: 100%;
+        width: 40%;
+        .logo{
+            background: url(../../assets/images/logo.svg);
+            height: 46px;
+            width: 213px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            cursor: pointer;
+        }
+
+        .infor-detail{
+            h4{
+                margin:10px 0;
+            }
+        }
+    }
+
+    .partner{
+        height: 100%;
+        width: 40%;
+        .partner-infor{
+            .partner-detail{
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                margin: 20px 0;
+                .img-partner{
+                    background: url("../../assets/images/partner/partner.png");
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    width: 80px;
+                    height: 60px;
+                    margin-right: 10px;
+                }
+                .infor-partner{
+                    span{
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.home-footer{
+    height: 80px;
+    width: 100%;
+    background-color: #45c3d2;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .copyright{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        color: white;
+    }
+
+    .icon-social{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .facebook{
+            color: blue;
+            font-size: 44px;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        .youtube{
+            color: red;
+            font-size: 44px;
+            cursor: pointer;
+        }
+    }
+
+}
 
 
